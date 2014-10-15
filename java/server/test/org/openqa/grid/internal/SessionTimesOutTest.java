@@ -28,6 +28,8 @@ import static org.openqa.grid.common.RegistrationRequest.CLEAN_UP_CYCLE;
 import static org.openqa.grid.common.RegistrationRequest.ID;
 import static org.openqa.grid.common.RegistrationRequest.TIME_OUT;
 
+import com.google.common.base.Throwables;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.grid.common.RegistrationRequest;
@@ -38,6 +40,7 @@ import org.openqa.grid.web.servlet.handler.RequestHandler;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class SessionTimesOutTest {
 
@@ -106,6 +109,7 @@ public class SessionTimesOutTest {
   private static boolean timeoutDone = false;
 
   class MyRemoteProxyTimeoutSlow extends DetachedRemoteProxy implements TimeoutListener {
+    private final Logger log = Logger.getLogger(MyRemoteProxyTimeoutSlow.class.getName());
 
     public MyRemoteProxyTimeoutSlow(RegistrationRequest request, Registry registry) {
       super(request, registry);
@@ -116,7 +120,8 @@ public class SessionTimesOutTest {
         Thread.sleep(1000);
         timeoutDone = true;
       } catch (InterruptedException e) {
-        e.printStackTrace();
+        log.warning(String.format("Interrupted Exception was thrown, %s\n%s",
+                                  e.getMessage(), Throwables.getStackTraceAsString(e)));
       }
     }
   }

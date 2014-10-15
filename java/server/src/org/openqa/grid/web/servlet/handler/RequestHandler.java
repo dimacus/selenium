@@ -17,6 +17,8 @@ limitations under the License.
 
 package org.openqa.grid.web.servlet.handler;
 
+import com.google.common.base.Throwables;
+
 import org.openqa.grid.common.exception.ClientGoneException;
 import org.openqa.grid.common.exception.GridException;
 import org.openqa.grid.internal.ExternalSessionKey;
@@ -169,7 +171,8 @@ public class RequestHandler implements Comparable<RequestHandler> {
         ((TestSessionListener) p).beforeSession(session);
       } catch (Exception e) {
         log.severe("Error running the beforeSessionListener : " + e.getMessage());
-        e.printStackTrace();
+        log.severe(String.format("Error running the beforeSessionListener : %s\n%s",
+                                 e.getMessage(), Throwables.getStackTraceAsString(e)));
         throw new NewSessionException("The listener threw an exception ( listener bug )", e);
       }
     }

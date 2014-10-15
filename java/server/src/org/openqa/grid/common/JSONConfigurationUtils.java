@@ -17,6 +17,7 @@ limitations under the License.
 
 package org.openqa.grid.common;
 
+import com.google.common.base.Throwables;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
@@ -29,8 +30,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.logging.Logger;
 
 public class JSONConfigurationUtils {
+  private static final Logger log = Logger.getLogger(JSONConfigurationUtils.class.getName());
 
   /**
    * load a JSON file from the resource or file system.
@@ -71,7 +74,8 @@ public class JSONConfigurationUtils {
         inputreader.close();
         in.close();
       } catch (IOException e) {
-        e.printStackTrace();
+        log.severe(String.format("Error closing buffer streams %s,\n%s", e.getMessage(),
+                                 Throwables.getStackTraceAsString(e)));
       }
     }
 
