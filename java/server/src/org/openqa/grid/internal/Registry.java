@@ -18,6 +18,7 @@ limitations under the License.
 package org.openqa.grid.internal;
 
 import com.google.common.base.Predicate;
+import com.google.common.base.Throwables;
 
 import net.jcip.annotations.ThreadSafe;
 
@@ -98,7 +99,8 @@ public class Registry {
     try {
       Thread.sleep(250);
     } catch (InterruptedException e) {
-      e.printStackTrace();
+      log.warning(String.format("Interrupted Exception was thrown, %s\n%s",
+                                e.getMessage(), Throwables.getStackTraceAsString(e)));
     }
     return registry;
   }
@@ -354,8 +356,8 @@ public class Registry {
         ((RegistrationListener) proxy).beforeRegistration();
       }
     } catch (Throwable t) {
-      log.severe("Error running the registration listener on " + proxy + ", " + t.getMessage());
-      t.printStackTrace();
+      log.severe(String.format("Error running the registration listener on %s, %s\n%s", proxy,
+                               t.getMessage(), Throwables.getStackTraceAsString(t)));
       listenerOk = false;
     }
 

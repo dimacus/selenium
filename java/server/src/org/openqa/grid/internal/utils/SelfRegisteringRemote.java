@@ -16,6 +16,7 @@ package org.openqa.grid.internal.utils;
 
 import static org.openqa.grid.common.RegistrationRequest.AUTO_REGISTER;
 
+import com.google.common.base.Throwables;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -209,7 +210,8 @@ public class SelfRegisteringRemote {
                   try {
                     Thread.sleep(registerCycleInterval);
                   } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    log.warning(String.format("Interrupted Exception was thrown, %s\n%s",
+                                              e.getMessage(), Throwables.getStackTraceAsString(e)));
                   }
                   // While we wait for someone to rewrite server logging.
                   LoggingManager.perSessionLogHandler().clearThreadTempLogs();
