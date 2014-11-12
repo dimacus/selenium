@@ -1,17 +1,20 @@
-// Copyright 2014 Selenium committers
-// Copyright 2014 Software Freedom Conservancy
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-//     You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+/**
+ * @license
+ * Copyright 2014 Selenium committers
+ * Copyright 2014 Software Freedom Conservancy
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *     You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 'use strict';
 
@@ -29,12 +32,18 @@ var NORMAL_EXTENSION = path.join(__dirname,
 
 
 test.suite(function(env) {
-  env.autoCreateDriver = false;
-
   describe('firefox', function() {
     describe('Options', function() {
+      var driver;
+
+      test.beforeEach(function() {
+        driver = null;
+      });
+
       test.afterEach(function() {
-        return env.dispose();
+        if (driver) {
+          driver.quit();
+        }
       });
 
       test.it('can start Firefox with custom preferences', function() {
@@ -43,7 +52,7 @@ test.suite(function(env) {
 
         var options = new firefox.Options().setProfile(profile);
 
-        var driver = env.builder().
+        driver = env.builder().
             setFirefoxOptions(options).
             build();
 
@@ -60,7 +69,7 @@ test.suite(function(env) {
 
         var options = new firefox.Options().setProfile(profile);
 
-        var driver = env.builder().
+        driver = env.builder().
             setFirefoxOptions(options).
             build();
 
@@ -76,7 +85,7 @@ test.suite(function(env) {
 
         var options = new firefox.Options().setProfile(profile);
 
-        var driver = env.builder().
+        driver = env.builder().
             setFirefoxOptions(options).
             build();
 
@@ -92,7 +101,7 @@ test.suite(function(env) {
 
         var options = new firefox.Options().setProfile(profile);
 
-        var driver = env.builder().
+        driver = env.builder().
             setFirefoxOptions(options).
             build();
 

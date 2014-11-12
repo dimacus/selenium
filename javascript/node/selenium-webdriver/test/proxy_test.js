@@ -1,17 +1,20 @@
-// Copyright 2013 Selenium committers
-// Copyright 2013 Software Freedom Conservancy
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-//     You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+/**
+ * @license
+ * Copyright 2013 Selenium committers
+ * Copyright 2013 Software Freedom Conservancy
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *     You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 'use strict';
 
@@ -28,8 +31,6 @@ var Browser = require('..').Browser,
 
 
 test.suite(function(env) {
-  env.autoCreateDriver = false;
-
   function writeResponse(res, body, encoding, contentType) {
     res.writeHead(200, {
       'Content-Length': Buffer.byteLength(body, encoding),
@@ -86,7 +87,9 @@ test.suite(function(env) {
   test.after(helloServer.stop.bind(helloServer));
   test.after(goodbyeServer.stop.bind(goodbyeServer));
 
-  test.afterEach(env.dispose.bind(env));
+  var driver;
+  test.beforeEach(function() { driver = null; });
+  test.afterEach(function() { driver && driver.quit(); });
 
   test.ignore(env.browsers(Browser.SAFARI)).  // Proxy support not implemented.
   describe('manual proxy settings', function() {
@@ -94,7 +97,7 @@ test.suite(function(env) {
     // settings.
     test.ignore(env.browsers(Browser.PHANTOM_JS)).
     it('can configure HTTP proxy host', function() {
-      var driver = env.builder().
+      driver = env.builder().
           setProxy(proxy.manual({
             http: proxyServer.host()
           })).
@@ -109,7 +112,7 @@ test.suite(function(env) {
     // PhantomJS does not support bypassing the proxy for individual hosts.
     test.ignore(env.browsers(Browser.PHANTOM_JS)).
     it('can bypass proxy for specific hosts', function() {
-      var driver = env.builder().
+      driver = env.builder().
           setProxy(proxy.manual({
             http: proxyServer.host(),
             bypass: helloServer.host()
@@ -135,7 +138,7 @@ test.suite(function(env) {
   test.ignore(env.browsers(Browser.PHANTOM_JS, Browser.SAFARI)).
   describe('pac proxy settings', function() {
     test.it('can configure proxy through PAC file', function() {
-      var driver = env.builder().
+      driver = env.builder().
           setProxy(proxy.pac(proxyServer.url('/proxy.pac'))).
           build();
 

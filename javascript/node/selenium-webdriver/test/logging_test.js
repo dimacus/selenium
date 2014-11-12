@@ -1,17 +1,20 @@
-// Copyright 2014 Selenium committers
-// Copyright 2014 Software Freedom Conservancy
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-//     You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+/**
+ * @license
+ * Copyright 2014 Selenium committers
+ * Copyright 2014 Software Freedom Conservancy
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ *     You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 'use strict';
 
@@ -22,23 +25,29 @@ var Browser = require('..').Browser,
     test = require('../lib/test');
 
 test.suite(function(env) {
-  env.autoCreateDriver = false;
-
   // Logging API has numerous issues with PhantomJS:
   //   - does not support adjusting log levels for type "browser".
   //   - does not return proper log level for "browser" messages.
   //   - does not delete logs after retrieval
   test.ignore(env.browsers(Browser.PHANTOM_JS)).
   describe('logging', function() {
+    var driver;
+
+    test.beforeEach(function() {
+      driver = null;
+    });
+
     test.afterEach(function() {
-      env.dispose();
+      if (driver) {
+        driver.quit();
+      }
     });
 
     test.it('can be disabled', function() {
       var prefs = new logging.Preferences();
       prefs.setLevel(logging.Type.BROWSER, logging.Level.OFF);
 
-      var driver = env.builder()
+      driver = env.builder()
           .setLoggingPrefs(prefs)
           .build();
 
@@ -59,7 +68,7 @@ test.suite(function(env) {
       var prefs = new logging.Preferences();
       prefs.setLevel(logging.Type.BROWSER, logging.Level.SEVERE);
 
-      var driver = env.builder()
+      driver = env.builder()
           .setLoggingPrefs(prefs)
           .build();
 
@@ -82,7 +91,7 @@ test.suite(function(env) {
       var prefs = new logging.Preferences();
       prefs.setLevel(logging.Type.BROWSER, logging.Level.DEBUG);
 
-      var driver = env.builder()
+      driver = env.builder()
           .setLoggingPrefs(prefs)
           .build();
 
@@ -111,7 +120,7 @@ test.suite(function(env) {
       var prefs = new logging.Preferences();
       prefs.setLevel(logging.Type.BROWSER, logging.Level.DEBUG);
 
-      var driver = env.builder()
+      driver = env.builder()
           .setLoggingPrefs(prefs)
           .build();
 
@@ -134,7 +143,7 @@ test.suite(function(env) {
       prefs.setLevel(logging.Type.BROWSER, logging.Level.DEBUG);
       prefs.setLevel(logging.Type.DRIVER, logging.Level.SEVERE);
 
-      var driver = env.builder()
+      driver = env.builder()
           .setLoggingPrefs(prefs)
           .build();
 
