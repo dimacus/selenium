@@ -164,7 +164,6 @@ public class SafariOptions {
    * The default location is:
    *    <ul>
    *      <li>OS X: /Users/$USER/Library/Safari
-   *      <li>Windows: %APPDATA%\Apple Computer\Safari
    *    </ul>
    *
    * @param dataDir A File object pointing to the Safari installation's data directory.

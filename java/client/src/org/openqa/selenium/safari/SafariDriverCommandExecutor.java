@@ -94,7 +94,7 @@ class SafariDriverCommandExecutor implements CommandExecutor {
 
     server.start();
 
-    safariExtensions.install();
+    safariExtensions.checkIfExtensionIsInstalled();
     if (cleanSession) {
       sessionData.clear();
     }
@@ -161,13 +161,6 @@ class SafariDriverCommandExecutor implements CommandExecutor {
 
     log.info("Stopping server");
     server.stop();
-
-    try {
-      log.info("Uninstalling extensions");
-      safariExtensions.uninstall();
-    } catch (IOException e) {
-      throw new WebDriverException("Unable to uninstall extensions", e);
-    }
 
     log.info("Shutdown complete");
   }

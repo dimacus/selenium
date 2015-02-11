@@ -25,32 +25,19 @@ class SessionData {
   public static SessionData forCurrentPlatform() {
     Platform current = Platform.getCurrent();
 
-    Iterable<File> files = ImmutableList.of();
-    if (current.is(Platform.MAC)) {
-      File libraryDir = new File("/Users", System.getenv("USER") + "/Library");
-      files = ImmutableList.of(
-          new File(libraryDir, "Caches/com.apple.Safari/Cache.db"),
-          new File(libraryDir, "Cookies/Cookies.binarycookies"),
-          new File(libraryDir, "Cookies/Cookies.plist"),
-          new File(libraryDir, "Safari/History.plist"),
-          new File(libraryDir, "Safari/LastSession.plist"),
-          new File(libraryDir, "Safari/LocalStorage"),
-          new File(libraryDir, "Safari/Databases"));
+    if (!current.is(Platform.MAC)) {
+      throw new IllegalStateException("The current platform is not supported: " + current);
     }
 
-    if (current.is(Platform.WINDOWS)) {
-      File appDataDir = new File(System.getenv("APPDATA"), "Apple Computer/Safari");
-      File localDataDir = new File(System.getenv("LOCALAPPDATA"), "Apple Computer/Safari");
-
-      files = ImmutableList.of(
-          new File(appDataDir, "History.plist"),
-          new File(appDataDir, "LastSession.plist"),
-          new File(appDataDir, "Cookies/Cookies.plist"),
-          new File(appDataDir, "Cookies/Cookies.binarycookies"),
-          new File(localDataDir, "Cache.db"),
-          new File(localDataDir, "Databases"),
-          new File(localDataDir, "LocalStorage"));
-    }
+    File libraryDir = new File("/Users", System.getenv("USER") + "/Library");
+    Iterable<File> files = ImmutableList.of(
+        new File(libraryDir, "Caches/com.apple.Safari/Cache.db"),
+        new File(libraryDir, "Cookies/Cookies.binarycookies"),
+        new File(libraryDir, "Cookies/Cookies.plist"),
+        new File(libraryDir, "Safari/History.plist"),
+        new File(libraryDir, "Safari/LastSession.plist"),
+        new File(libraryDir, "Safari/LocalStorage"),
+        new File(libraryDir, "Safari/Databases"));
 
     return new SessionData(files);
   }
